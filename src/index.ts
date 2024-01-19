@@ -3,19 +3,19 @@ import type { PublicConfiguration, Revalidator, RevalidatorOptions, SWRResponse 
 export type { PublicConfiguration, Revalidator, RevalidatorOptions, SWRResponse } from "swr/_internal"
 
 export type FetcherConfigWithoutArg<Data> = {
-    fecther: () => Promise<Data>
+    fecther: () => Data | Promise<Data>
 }
 
 export type FetcherConfigWithArg<Data, Arg> = {
     arg: Arg
-    fecther: (arg: Arg) => Promise<Data>
+    fecther: (arg: Arg) => Data | Promise<Data>
 }
 
-export function fetcherWithoutArg<Data>(config: FetcherConfigWithoutArg<Data>): Promise<Data> {
+export async function fetcherWithoutArg<Data>(config: FetcherConfigWithoutArg<Data>): Promise<Data> {
     return config.fecther()
 }
 
-export function fetcherWithArg<Data, Arg>(config: FetcherConfigWithArg<Data, Arg>): Promise<Data> {
+export async function fetcherWithArg<Data, Arg>(config: FetcherConfigWithArg<Data, Arg>): Promise<Data> {
     return config.fecther(config.arg)
 }
 
@@ -40,7 +40,7 @@ export type UseSWRWithoutArgOptions<Data> = Omit<PublicConfiguration<Data, any>,
 }
 
 export function useSoda<Data, Options extends Partial<UseSWRWithoutArgOptions<Data>> | undefined = undefined>(fetcher: FetcherWithoutArg<Data>, options?: Options): SWRResponse<Data, any, Options>
-export function useSoda<Data, Arg, Options extends Partial<UseSWRWithArgOptions<Data, Arg>> | undefined = undefined>(arg: Arg, fetcher: FetcherWithArg<Data, Arg>, options?: Options): SWRResponse<Data, any, Options>
+export function useSoda<Data, Arg, Options extends Partial<UseSWRWithArgOptions<Data, Arg>> | undefined = undefined>(arg: Arg, fetcher: (arg: Arg) => Data | Promise<Data>, options?: Options): SWRResponse<Data, any, Options>
 export function useSoda(argOrFecther: any, fetcherOrOprions?: any, options?: any) {
     if (typeof argOrFecther === "function" && typeof fetcherOrOprions !== "function") {
         return useSWR({ fetcher: argOrFecther }, fetcherWithoutArg, fetcherOrOprions)
