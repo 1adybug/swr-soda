@@ -3,20 +3,20 @@ import type { PublicConfiguration, Revalidator, RevalidatorOptions, SWRResponse 
 export type { PublicConfiguration, Revalidator, RevalidatorOptions, SWRResponse } from "swr/_internal"
 
 export type FetcherConfigWithoutArg<Data> = {
-    fecther: () => Data | Promise<Data>
+    fetcher: () => Data | Promise<Data>
 }
 
 export type FetcherConfigWithArg<Data, Arg> = {
     arg: Arg
-    fecther: (arg: Arg) => Data | Promise<Data>
+    fetcher: (arg: Arg) => Data | Promise<Data>
 }
 
 export async function fetcherWithoutArg<Data>(config: FetcherConfigWithoutArg<Data>): Promise<Data> {
-    return config.fecther()
+    return config.fetcher()
 }
 
 export async function fetcherWithArg<Data, Arg>(config: FetcherConfigWithArg<Data, Arg>): Promise<Data> {
-    return config.fecther(config.arg)
+    return config.fetcher(config.arg)
 }
 
 export type FetcherWithoutArg<Data> = (arg: FetcherConfigWithoutArg<Data>) => Promise<Data>
