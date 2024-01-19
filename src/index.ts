@@ -39,8 +39,8 @@ export type UseSWRWithoutArgOptions<Data> = Omit<PublicConfiguration<Data, any>,
     onErrorRetry: (err: any, key: string, config: Readonly<UseSWRWithoutArgOptions<Data>>, revalidate: Revalidator, revalidateOpts: Required<RevalidatorOptions>) => void
 }
 
-export function useSoda<Data, Options extends UseSWRWithoutArgOptions<Data> | undefined = undefined>(fetcher: FetcherWithoutArg<Data>, options?: Options): SWRResponse<Data, any, Options>
-export function useSoda<Data, Arg, Options extends UseSWRWithArgOptions<Data, Arg> | undefined = undefined>(arg: Arg, fetcher: FetcherWithArg<Data, Arg>, options?: Options): SWRResponse<Data, any, Options>
+export function useSoda<Data, Options extends Partial<UseSWRWithoutArgOptions<Data>> | undefined = undefined>(fetcher: FetcherWithoutArg<Data>, options?: Options): SWRResponse<Data, any, Options>
+export function useSoda<Data, Arg, Options extends Partial<UseSWRWithArgOptions<Data, Arg>> | undefined = undefined>(arg: Arg, fetcher: FetcherWithArg<Data, Arg>, options?: Options): SWRResponse<Data, any, Options>
 export function useSoda(argOrFecther: any, fetcherOrOprions?: any, options?: any) {
     if (typeof argOrFecther === "function" && typeof fetcherOrOprions !== "function") {
         return useSWR({ fetcher: argOrFecther }, fetcherWithoutArg, fetcherOrOprions)
