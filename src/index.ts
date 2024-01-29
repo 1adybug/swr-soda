@@ -24,24 +24,24 @@ export type FetcherWithoutArg<Data = any> = (arg: FetcherConfigWithoutArg<Data>)
 
 export type FetcherWithArg<Data = any, Arg = any> = (arg: FetcherConfigWithArg<Data, Arg>) => Promise<Data>
 
-export type UseSodaWithArgOptions<Data = any, Arg = any> = Omit<PublicConfiguration<Data, any>, "fetcher" | "onLoadingSlow" | "onSuccess" | "onError" | "onErrorRetry"> & {
+export type WithArgOptions<Data = any, Arg = any> = Omit<PublicConfiguration<Data, any>, "fetcher" | "onLoadingSlow" | "onSuccess" | "onError" | "onErrorRetry"> & {
     fetcher?: FetcherWithArg<Data, Arg>
-    onLoadingSlow: (key: string, config: Readonly<UseSodaWithArgOptions<Data, Arg>>) => void
-    onSuccess: (data: Data, key: string, config: Readonly<UseSodaWithArgOptions<Data, Arg>>) => void
-    onError: (err: any, key: string, config: Readonly<UseSodaWithArgOptions<Data, Arg>>) => void
-    onErrorRetry: (err: any, key: string, config: Readonly<UseSodaWithArgOptions<Data, Arg>>, revalidate: Revalidator, revalidateOpts: Required<RevalidatorOptions>) => void
+    onLoadingSlow: (key: string, config: Readonly<WithArgOptions<Data, Arg>>) => void
+    onSuccess: (data: Data, key: string, config: Readonly<WithArgOptions<Data, Arg>>) => void
+    onError: (err: any, key: string, config: Readonly<WithArgOptions<Data, Arg>>) => void
+    onErrorRetry: (err: any, key: string, config: Readonly<WithArgOptions<Data, Arg>>, revalidate: Revalidator, revalidateOpts: Required<RevalidatorOptions>) => void
 }
 
-export type UseSodaWithoutArgOptions<Data = any> = Omit<PublicConfiguration<Data, any>, "fetcher" | "onLoadingSlow" | "onSuccess" | "onError" | "onErrorRetry"> & {
+export type WithoutArgOptions<Data = any> = Omit<PublicConfiguration<Data, any>, "fetcher" | "onLoadingSlow" | "onSuccess" | "onError" | "onErrorRetry"> & {
     fetcher?: FetcherWithoutArg<Data>
-    onLoadingSlow: (key: string, config: Readonly<UseSodaWithoutArgOptions<Data>>) => void
-    onSuccess: (data: Data, key: string, config: Readonly<UseSodaWithoutArgOptions<Data>>) => void
-    onError: (err: any, key: string, config: Readonly<UseSodaWithoutArgOptions<Data>>) => void
-    onErrorRetry: (err: any, key: string, config: Readonly<UseSodaWithoutArgOptions<Data>>, revalidate: Revalidator, revalidateOpts: Required<RevalidatorOptions>) => void
+    onLoadingSlow: (key: string, config: Readonly<WithoutArgOptions<Data>>) => void
+    onSuccess: (data: Data, key: string, config: Readonly<WithoutArgOptions<Data>>) => void
+    onError: (err: any, key: string, config: Readonly<WithoutArgOptions<Data>>) => void
+    onErrorRetry: (err: any, key: string, config: Readonly<WithoutArgOptions<Data>>, revalidate: Revalidator, revalidateOpts: Required<RevalidatorOptions>) => void
 }
 
-export function useSoda<Data, Options extends Partial<UseSodaWithoutArgOptions<Data>> | undefined = undefined>(fetcher: () => Data | Promise<Data>, options?: Options): SWRResponse<Data, any, Options>
-export function useSoda<Data, Arg, Options extends Partial<UseSodaWithArgOptions<Data, Arg>> | undefined = undefined>(arg: Arg, fetcher: (arg: NonNullable<Arg>) => Data | Promise<Data>, options?: Options): SWRResponse<Data, any, Options>
+export function useSoda<Data, Options extends Partial<WithoutArgOptions<Data>> | undefined = undefined>(fetcher: () => Data | Promise<Data>, options?: Options): SWRResponse<Data, any, Options>
+export function useSoda<Data, Arg, Options extends Partial<WithArgOptions<Data, Arg>> | undefined = undefined>(arg: Arg, fetcher: (arg: NonNullable<Arg>) => Data | Promise<Data>, options?: Options): SWRResponse<Data, any, Options>
 export function useSoda(argOrFecther: any, fetcherOrOprions?: any, options?: any) {
     if (argOrFecther === null) {
         return useSWR(null, fetcherWithArg, options)
