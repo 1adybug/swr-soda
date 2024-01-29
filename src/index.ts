@@ -1,5 +1,5 @@
 import useSWR from "swr"
-import type { PublicConfiguration, Revalidator, RevalidatorOptions, SWRResponse } from "swr/_internal"
+import type { Middleware, PublicConfiguration, Revalidator, RevalidatorOptions, SWRResponse } from "swr/_internal"
 export { unstable_serialize, default as useSWR } from "swr"
 export * from "swr/_internal"
 
@@ -53,3 +53,10 @@ export function useSoda(argOrFecther: any, fetcherOrOprions?: any, options?: any
 }
 
 export default useSoda
+
+export const sodaMiddleware: Middleware = function SodaMiddleware(useSWRNext) {
+    return function sodaMiddlewareWrapper(key, _fetcher, config) {
+        if (key === null) return useSWRNext(key, fetcherWithArg, config)
+        return useSWRNext({ key, fetcher: _fetcher }, fetcherWithArg, config)
+    }
+}
