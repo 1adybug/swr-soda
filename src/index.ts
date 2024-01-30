@@ -66,7 +66,7 @@ export const sodaInfiniteMiddleware: Middleware = function SodaInfiniteMiddlewar
         function getKey(pageIndex: number, previousPageData: any) {
             const _key = (key as Function)(pageIndex, previousPageData)
             if (_key === null) return null
-            return { key: _key, fetcher }
+            return { arg: _key, fetcher }
         }
         return useSWRNext(getKey, fetcherWithArg, config)
     }
