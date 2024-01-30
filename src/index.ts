@@ -55,8 +55,19 @@ export function useSoda(argOrFecther: any, fetcherOrOprions?: any, options?: any
 export default useSoda
 
 export const sodaMiddleware: Middleware = function SodaMiddleware(useSWRNext) {
-    return function sodaMiddlewareWrapper(key, _fetcher, config) {
+    return function sodaMiddlewareWrapper(key, fetcher, config) {
         if (key === null) return useSWRNext(key, fetcherWithArg, config)
-        return useSWRNext({ key, fetcher: _fetcher }, fetcherWithArg, config)
+        return useSWRNext({ key, fetcher }, fetcherWithArg, config)
+    }
+}
+
+export const sodaInfiniteMiddleware: Middleware = function SodaInfiniteMiddleware(useSWRNext) {
+    return function sodaInfiniteMiddlewareWrapper(key, fetcher, config) {
+        function getKey(pageIndex: number, previousPageData: any) {
+            const _key = (key as Function)(pageIndex, previousPageData)
+            if (_key === null) return null
+            return { key: _key, fetcher }
+        }
+        return useSWRNext(getKey, fetcherWithArg, config)
     }
 }
