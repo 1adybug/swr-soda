@@ -57,7 +57,7 @@ export default useSoda
 export const sodaMiddleware: Middleware = function SodaMiddleware(useSWRNext) {
     return function sodaMiddlewareWrapper(key, fetcher, config) {
         if (key === null) return useSWRNext(key, fetcherWithArg, config)
-        return useSWRNext({ key, fetcher }, fetcherWithArg, config)
+        return useSWRNext({ arg: key, fetcher }, fetcherWithArg, config)
     }
 }
 
